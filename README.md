@@ -70,7 +70,7 @@ npm test
 - **TypeScript** : Sécurité de typage et meilleure maintenabilité du code,
 - **Multer** : Middleware pour Express pour gérer les fichiers uploadés via `multipart/form-data`,
 - **Docker** : Portabilité et facilité de déploiement,
-- **Jest** : Framework de tests moderne et efficace pour Node.js,
+- **Jest** : Framework de tests et efficace en javascript/typescript,
 - **Supertest** : Framework de tests pour Express pour les tests d'API sans avoir à démarrer le serveur,
 - **OpenAI** : Service de transcription vocale largement documenté et facile à utiliser.
 
