@@ -19,4 +19,5 @@ it('should return 200 with a fake transcription', async () => {
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty('transcription');
+    expect(res.body.transcription).toBe('fake transcription');
 });
