@@ -27,6 +27,7 @@ router.post('/', upload.single('audio'), async (req, res, next) => {
         language: 'en',
         model: "whisper-1"
     }).then(response => {
+        console.log('Transcription:', response.text);
         res.json({ transcription: response.text });
         tmpFile.removeCallback();
     }).catch(error => {

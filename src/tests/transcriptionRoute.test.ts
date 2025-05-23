@@ -23,15 +23,21 @@ it('should return 400 if the file is not a .wav', async () => {
 });
 
 it('should return the correct transcription for a known and small .wav file', async () => {
-    const buffer = require('fs').readFileSync(path.join(__dirname, 'helloworld.wav'));
     const res = await request(app)
         .post('/transcription')
-        .attach('audio', buffer, {
-            filename: 'helloworld.wav',
-            contentType: 'audio/wav'
-        });
+        .attach('audio', path.join(__dirname, 'helloworld.wav'));
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty('transcription');
     expect(res.body.transcription).toBe('Hello, world!');
+}, 20000);
+
+it('should return the correct transcription for a known and large .wav file', async () => {
+    const res = await request(app)
+        .post('/transcription')
+        .attach('audio', path.join(__dirname, 'sample1.wav'));
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty('transcription');
+    expect(res.body.transcription).toBe('The stale smell of old beer lingers. It takes heat to bring out the odor. A cold dip restores health and zest. A salt pickle tastes fine with ham. Tacos al pastor are my favorite. A zestful food is the hot cross bun.');
 }, 20000);
