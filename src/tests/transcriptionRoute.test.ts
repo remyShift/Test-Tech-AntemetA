@@ -12,16 +12,6 @@ describe('POST /transcription', () => {
     });
 });
 
-it('should return 200 with a fake transcription', async () => {
-    const res = await request(app)
-        .post('/transcription')
-        .attach('audio', path.join(__dirname, 'sample1.wav'));
-
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty('transcription');
-    expect(res.body.transcription).toBe('fake transcription');
-});
-
 it('should return 400 if the file is not a .wav', async () => {
     const res = await request(app)
         .post('/transcription')
@@ -32,12 +22,16 @@ it('should return 400 if the file is not a .wav', async () => {
     expect(res.body.error).toBe('Only .wav files are allowed');
 });
 
-it('should return the correct transcription for a known .wav file', async () => {
+it('should return the correct transcription for a known and small .wav file', async () => {
+    const buffer = require('fs').readFileSync(path.join(__dirname, 'helloworld.wav'));
     const res = await request(app)
         .post('/transcription')
-        .attach('audio', path.join(__dirname, 'hello.wav'));
+        .attach('audio', buffer, {
+            filename: 'helloworld.wav',
+            contentType: 'audio/wav'
+        });
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty('transcription');
-    expect(res.body.transcription).toBe('hello world');
-});
+    expect(res.body.transcription).toBe('Hello, world!');
+}, 20000);

@@ -1,5 +1,8 @@
+import dotenv from 'dotenv';
 import express, { NextFunction, Request, Response } from 'express';
 import transcriptionRoute from './routes/transcription';
+
+dotenv.config();
 
 const app = express();
 
