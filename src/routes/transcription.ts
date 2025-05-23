@@ -1,8 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import multer from 'multer';
-import fs from 'fs';
-import { OpenAI } from 'openai';
-import tmp from 'tmp';
+import { transcribeWav } from '../utils/transcribeWav';
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -16,26 +14,15 @@ router.post('/', upload.single('audio'), async (req, res, next) => {
         return res.status(400).json({ error: 'Only .wav files are allowed' });
     }
 
-    // Crée un fichier temporaire
-    const tmpFile = tmp.fileSync({ postfix: '.wav' });
-    fs.writeFileSync(tmpFile.name, req.file.buffer);
-
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
-    openai.audio.transcriptions.create({
-        file: fs.createReadStream(tmpFile.name),
-        language: 'en',
-        model: "whisper-1"
-    }).then(response => {
-        console.log('Transcription:', response.text);
-        res.json({ transcription: response.text });
-        tmpFile.removeCallback();
-    }).catch(error => {
-        tmpFile.removeCallback();
-        fs.unlinkSync(tmpFile.name);
-        console.error('Whisper API error:', error);
-        next(error);
-    });
+    transcribeWav(req.file.buffer, process.env.OPENAI_API_KEY!)
+        .then(transcription => {
+            console.log('Transcription:', transcription);
+            res.json({ transcription })
+        })
+        .catch(error => {
+            console.error('Whisper API error:', error);
+            next(error);
+        });
 });
 
 router.use((err: Error, req: Request, res: Response, next: NextFunction) => {
