@@ -24,7 +24,7 @@ Cette API REST permet de transcrire un fichier audio au format `.wav` en texte. 
 
 2. Lancer le conteneur :
    ```sh
-    docker run -e PORT=3000 -e OPENAI_API_KEY=YOURAPIKEY test-tech-antemeta
+    docker run -e PORT=3000 -e OPENAI_API_KEY=YOURAPIKEY -p 3000:3000 test-tech-antemeta
    ```
 
 ### En local (hors Docker)
