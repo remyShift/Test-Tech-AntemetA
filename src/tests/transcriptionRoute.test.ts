@@ -31,3 +31,13 @@ it('should return 400 if the file is not a .wav', async () => {
     expect(res.body).toHaveProperty('error');
     expect(res.body.error).toBe('Only .wav files are allowed');
 });
+
+it('should return the correct transcription for a known .wav file', async () => {
+    const res = await request(app)
+        .post('/transcription')
+        .attach('audio', path.join(__dirname, 'hello.wav'));
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty('transcription');
+    expect(res.body.transcription).toBe('hello world');
+});
