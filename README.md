@@ -80,13 +80,9 @@ npm test
 src/
   routes/         # Définition des routes Express
   utils/          # Fonctions utilitaires (notamment l'appel à l'API OpenAI pour la transcription vocale)
-  tests/          # Tests unitaires
+  tests/          # Tests unitaires avec des fichiers audio de test
   app.ts          # Configuration de l’application Express
   server.ts       # Point d’entrée du serveur
 Dockerfile        # Configuration Docker
 package.json      # Dépendances et scripts
 ```
-
-## Remarques
-
-- L’API attend des fichiers au format `.wav` pour garantir la compatibilité avec les services de transcription.
