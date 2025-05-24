@@ -26,8 +26,4 @@ router.post('/', upload.single('audio'), async (req, res, next) => {
         });
 });
 
-router.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    res.status(400).json({ error: err.message || 'Unknown error' });
-});
-
 export default router;
