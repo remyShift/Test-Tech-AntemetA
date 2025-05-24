@@ -1,26 +1,27 @@
 import express, { NextFunction, Request, Response } from 'express';
 import multer from 'multer';
 import { transcribeWav } from '../utils/transcribeWav';
+import { validateFile } from '../utils/fileValidation';
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.post('/', upload.single('audio'), async (req, res, next) => {
-    if (!req.file) {
-        return res.status(400).json({ error: 'No file uploaded' });
-    }
-    const ext = req.file.originalname.split('.').pop();
-    if (ext !== 'wav') {
-        return res.status(400).json({ error: 'Only .wav files are allowed' });
-    }
-
-    transcribeWav(req.file.buffer, process.env.OPENAI_API_KEY!)
-        .then(transcription => {
-            console.log('Transcription:', transcription);
-            res.json({ transcription })
+    validateFile(req.file)
+        .then(() => {
+            const file = req.file!;
+            transcribeWav(file.buffer, process.env.OPENAI_API_KEY!)
+                .then(transcription => {
+                    console.log('Transcription:', transcription);
+                    res.json({ transcription })
+                })
+                .catch(error => {
+                    console.error('Whisper API error:', error.message);
+                    next(error);
+                });
         })
         .catch(error => {
-            console.error('Whisper API error:', error);
+            console.error('File validation error:', error.message);
             next(error);
         });
 });

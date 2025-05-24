@@ -2,7 +2,7 @@ import fs from 'fs';
 import tmp from 'tmp';
 import { OpenAI } from 'openai';
 
-export async function transcribeWav(buffer: Buffer, apiKey: string): Promise<string> {
+export const transcribeWav = async (buffer: Buffer, apiKey: string): Promise<string> => {
     const tmpFile = tmp.fileSync({ postfix: '.wav' });
     fs.writeFileSync(tmpFile.name, buffer);
 
