@@ -46,14 +46,14 @@ NB : Ne pas oublier de créer un fichier `.env` avec la variable d'environnement
 ### Endpoint de transcription
 
 - **URL** : `POST /transcription`
-- **Paramètre** : fichier audio `.wav` envoyé via `multipart/form-data` (clé : `file`)
+- **Paramètre** : fichier audio `.wav` envoyé via `multipart/form-data` (clé : `audio`)
 - **Réponse** : texte transcrit en JSON
 
 #### Exemple avec `curl` :
 
 ```sh
 curl -X POST http://localhost:3000/transcription \
-  -F "file=@/chemin/vers/votre_fichier.wav"
+  -F "audio=@/chemin/vers/votre_fichier.wav"
 ```
 
 ## Tests

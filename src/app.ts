@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import express, { Request, Response } from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import transcriptionRoute from './routes/transcription';
 
 dotenv.config();
@@ -10,8 +10,8 @@ app.use('/transcription', transcriptionRoute);
 
 app.get('/ping', (_req: Request, res: Response) => res.send('pong'));
 
-app.use((err: Error, req: Request, res: Response) => {
-    res.status(400).json({ error: err.message || 'Unknown error' });
+app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
+    res.status(400).json({ error: err.message || 'Internal Server Error' });
 });
 
 export default app;
